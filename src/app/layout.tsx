@@ -37,6 +37,8 @@ export default function RootLayout({
             <div className="flex space-x-6">
               <Link href="/" className="hover:underline">홈</Link>
               <Link href="/products" className="hover:underline">상품 목록</Link>
+              <Link href="/notice" className="hover:underline">공지사항</Link>
+              <Link href="/inquiry" className="hover:underline">문의하기</Link>
               <Link href="/cart" className="hover:underline">장바구니</Link>
             </div>
           </nav>
@@ -58,10 +60,13 @@ export default function RootLayout({
                 <p className="text-gray-600">제주도 해안가에 위치한 친환경 감귤 농장입니다. 제주의 맑은 공기와 깨끗한 물로 재배한 감귤을 직접 배송해 드립니다.</p>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-4">영업 시간</h3>
-                <p className="text-gray-600">온라인 주문: 24시간</p>
-                <p className="text-gray-600">농장 방문: 9:00 - 17:00 (월-토)</p>
-                <p className="text-gray-600">휴무일: 일요일</p>
+                <h3 className="font-bold text-lg mb-4">바로가기</h3>
+                <ul className="space-y-2">
+                  <li><Link href="/notice" className="text-gray-600 hover:text-orange-500">공지사항</Link></li>
+                  <li><Link href="/inquiry" className="text-gray-600 hover:text-orange-500">문의하기</Link></li>
+                  <li><Link href="/" className="text-gray-600 hover:text-orange-500">사이트맵</Link></li>
+                  <li><Link href="/" className="text-gray-600 hover:text-orange-500">개인정보처리방침</Link></li>
+                </ul>
               </div>
             </div>
             <div className="border-t border-gray-200 mt-8 pt-8 text-center">
