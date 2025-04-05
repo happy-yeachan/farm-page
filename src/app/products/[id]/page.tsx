@@ -91,6 +91,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
   
+  // 이미지 경로 처리
+  const imageUrl = product.image.startsWith('http') 
+    ? product.image 
+    : `https://jejumandarin.com${product.image}`;
+  
   return {
     title: `${product.name} | 행복한 감귤농장 제주 감귤 직거래`,
     description: `${product.description}. 제주 서귀포시 직영 감귤농장에서 당일 수확한 ${product.name}을 산지 직송으로 신선하게 만나보세요.`,
@@ -99,7 +104,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${product.name} | 행복한 감귤농장`,
       description: product.description,
       type: 'website',
-      images: [product.image]
+      // 안전하게 images 속성 처리
+      images: [{
+        url: imageUrl,
+        width: 800,
+        height: 600,
+        alt: product.name
+      }]
     }
   };
 }
@@ -138,7 +149,7 @@ export default function ProductDetail({ params }: Props) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* 상품 이미지 */}
-        <div className="aspect-square bg-orange-50 rounded-lg flex items-center justify-center text-orange-500 font-bold text-xl" itemProp="image" content={product.image}>
+        <div className="aspect-square bg-orange-50 rounded-lg flex items-center justify-center text-orange-500 font-bold text-xl" itemProp="image" content={product.image.startsWith('http') ? product.image : `https://jejumandarin.com${product.image}`}>
           {product.name}
         </div>
 
@@ -235,29 +246,31 @@ export default function ProductDetail({ params }: Props) {
       </div>
       
       {/* 상품 리뷰 섹션 (SEO 향상) */}
-      <section className="mt-12" itemProp="review" itemScope itemType="https://schema.org/Review">
+      <section className="mt-12">
         <h3 className="text-xl font-bold mb-6">고객 리뷰</h3>
         <div className="border p-4 rounded-lg">
-          <div className="flex items-center mb-2">
-            <div className="flex text-yellow-400 mr-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star}>★</span>
-              ))}
+          <div itemProp="review" itemScope itemType="https://schema.org/Review">
+            <div className="flex items-center mb-2">
+              <div className="flex text-yellow-400 mr-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span key={star}>★</span>
+                ))}
+              </div>
+              <div itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                <meta itemProp="ratingValue" content="5" />
+                <meta itemProp="bestRating" content="5" />
+              </div>
+              <span className="font-medium" itemProp="author">김제주</span>
+              <span className="text-gray-500 text-sm ml-2">2024.03.15</span>
+              <meta itemProp="datePublished" content="2024-03-15" />
             </div>
-            <meta itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
-              <meta itemProp="ratingValue" content="5" />
-              <meta itemProp="bestRating" content="5" />
-            </meta>
-            <span className="font-medium" itemProp="author">김제주</span>
-            <span className="text-gray-500 text-sm ml-2">2024.03.15</span>
-            <meta itemProp="datePublished" content="2024-03-15" />
+            <h4 className="font-semibold mb-2" itemProp="name">정말 맛있는 {product.name}</h4>
+            <p className="text-gray-700" itemProp="reviewBody">
+              제주 여행 중 직접 방문했다가 너무 맛있어서 귀향 후에도 주문해 먹고 있어요. 
+              당도가 높고 과즙이 풍부해서 가족 모두가 만족하며 먹고 있습니다. 
+              포장도 꼼꼼하게 해주셔서 신선한 상태로 받았습니다. 재구매 의사 100%!
+            </p>
           </div>
-          <h4 className="font-semibold mb-2" itemProp="name">정말 맛있는 {product.name}</h4>
-          <p className="text-gray-700" itemProp="reviewBody">
-            제주 여행 중 직접 방문했다가 너무 맛있어서 귀향 후에도 주문해 먹고 있어요. 
-            당도가 높고 과즙이 풍부해서 가족 모두가 만족하며 먹고 있습니다. 
-            포장도 꼼꼼하게 해주셔서 신선한 상태로 받았습니다. 재구매 의사 100%!
-          </p>
         </div>
       </section>
       
