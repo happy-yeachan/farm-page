@@ -194,11 +194,19 @@ export default function AdminOrdersPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">주문 관리</h1>
-        <p className="text-gray-600">
-          고객 주문 내역을 확인하고 관리하세요
-        </p>
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">주문 관리</h1>
+          <p className="text-gray-600">
+            고객 주문 내역을 확인하고 관리하세요
+          </p>
+        </div>
+        <Link 
+          href="/admin/dashboard" 
+          className="bg-orange-100 text-orange-800 px-4 py-2 rounded-lg hover:bg-orange-200"
+        >
+          대시보드로 돌아가기
+        </Link>
       </div>
       
       {/* 검색 및 필터 */}

@@ -221,12 +221,20 @@ export default function AdminProductsPage() {
             제주 특산품 상품을 관리하세요
           </p>
         </div>
-        <Link 
-          href="/admin/products/new" 
-          className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
-        >
-          + 새 상품 등록
-        </Link>
+        <div className="flex gap-3">
+          <Link 
+            href="/admin/dashboard" 
+            className="bg-orange-100 text-orange-800 px-4 py-2 rounded-lg hover:bg-orange-200"
+          >
+            대시보드로 돌아가기
+          </Link>
+          <Link 
+            href="/admin/products/new" 
+            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+          >
+            + 새 상품 등록
+          </Link>
+        </div>
       </div>
       
       {/* 검색 및 필터 */}
