@@ -122,7 +122,7 @@ export default function ProductsPage() {
             <meta itemProp="position" content={(index + 1).toString()} />
             <Link href={`/products/${product.id}`} className="block">
               <div 
-                className="border border-orange-100 rounded-lg overflow-hidden hover:shadow-md transition"
+                className="border border-orange-100 rounded-lg overflow-hidden hover:shadow-md transition cursor-pointer"
                 itemProp="item" 
                 itemScope 
                 itemType="https://schema.org/Product"

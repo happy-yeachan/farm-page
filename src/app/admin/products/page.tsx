@@ -4,6 +4,19 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+// 상품 타입 정의
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  sales?: number;
+  isOnSale: boolean;
+  discount: number;
+  createdAt: string;
+}
+
 // 가상의 상품 데이터
 const products = [
   {
@@ -106,6 +119,49 @@ const products = [
 
 // 카테고리 목록
 const categories = ['전체', '한라봉', '천혜향', '감귤', '황금향', '레드향'];
+
+// 상품 행 컴포넌트
+const ProductRow = ({ product, onEdit, onDelete }: { 
+  product: Product; 
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
+}) => (
+  <tr>
+    <td className="px-4 py-3 text-center">{product.id}</td>
+    <td className="px-4 py-3">
+      <Link href={`/products/${product.id}`} className="text-blue-600 hover:underline">
+        {product.name}
+      </Link>
+    </td>
+    <td className="px-4 py-3">{product.category}</td>
+    <td className="px-4 py-3 text-right">{product.price.toLocaleString()}원</td>
+    <td className="px-4 py-3 text-center">{product.stock}</td>
+    <td className="px-4 py-3 text-center">{product.sales || 0}</td>
+    <td className="px-4 py-3 text-center">
+      {product.isOnSale && product.discount > 0 ? (
+        <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">{product.discount}%</span>
+      ) : (
+        <span className="text-gray-400">-</span>
+      )}
+    </td>
+    <td className="px-4 py-3 text-right">
+      <div className="flex justify-end space-x-2">
+        <button 
+          onClick={() => onEdit(product.id)}
+          className="text-blue-600 hover:text-blue-800"
+        >
+          수정
+        </button>
+        <button 
+          onClick={() => onDelete(product.id)}
+          className="text-red-600 hover:text-red-800"
+        >
+          삭제
+        </button>
+      </div>
+    </td>
+  </tr>
+);
 
 export default function AdminProductsPage() {
   const router = useRouter();
@@ -230,86 +286,20 @@ export default function AdminProductsPage() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredProducts.map(product => (
-                <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 flex-shrink-0 bg-gray-200 rounded-md mr-3"></div>
-                      <div>
-                        <div className="font-medium text-gray-900">{product.name}</div>
-                        <div className="text-xs text-gray-500">ID: {product.id}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                      {product.category}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    {product.isOnSale ? (
-                      <div>
-                        <span className="line-through text-gray-500">{product.price.toLocaleString()}원</span>
-                        <span className="ml-1 text-red-600 font-medium">
-                          {Math.round(product.price * (1 - product.discount / 100)).toLocaleString()}원
-                        </span>
-                        <span className="ml-1 text-xs text-red-500">{product.discount}%↓</span>
-                      </div>
-                    ) : (
-                      <span>{product.price.toLocaleString()}원</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    {product.stock > 0 ? (
-                      <span>{product.stock}개</span>
-                    ) : (
-                      <span className="text-red-500 font-medium">품절</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-center">{product.sales}개</td>
-                  <td className="px-4 py-3 text-center">{product.createdAt}</td>
-                  <td className="px-4 py-3 text-center">
-                    {product.isOnSale ? (
-                      <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                        할인중
-                      </span>
-                    ) : product.stock > 0 ? (
-                      <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                        판매중
-                      </span>
-                    ) : (
-                      <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
-                        품절
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <div className="flex justify-center space-x-2">
-                      <Link 
-                        href={`/admin/products/edit/${product.id}`}
-                        className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-md"
-                        title="수정"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                        </svg>
-                      </Link>
-                      <button 
-                        className="p-1.5 text-red-600 hover:bg-red-50 rounded-md"
-                        title="삭제"
-                        onClick={() => {
-                          if (window.confirm(`'${product.name}' 상품을 정말 삭제하시겠습니까?`)) {
-                            // 여기에 삭제 로직 구현 (실제로는 API 호출)
-                            alert('삭제되었습니다.');
-                          }
-                        }}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                <ProductRow 
+                  key={product.id}
+                  product={product}
+                  onEdit={(id) => {
+                    router.push(`/admin/products/edit/${id}`);
+                  }}
+                  onDelete={(id) => {
+                    if (window.confirm(`'${product.name}' 상품을 정말 삭제하시겠습니까?`)) {
+                      // 실제로는 API 호출로 구현
+                      alert('상품이 삭제되었습니다.');
+                      // 삭제 후 목록 갱신 로직 추가
+                    }
+                  }}
+                />
               ))}
             </tbody>
           </table>
