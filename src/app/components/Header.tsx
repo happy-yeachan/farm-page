@@ -92,17 +92,17 @@ export default function Header() {
           
           {/* 모바일 메뉴 버튼 */}
           <div className="md:hidden flex items-center">
-            <Link href="/cart" className="mr-3 relative">
+            <Link href="/cart" className="mr-4 relative py-3 px-2">
               <span className="text-xl">🛒</span>
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
             </Link>
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white focus:outline-none"
+              className="text-white focus:outline-none p-3"
             >
               {isMenuOpen ? (
                 <span className="text-2xl">×</span>
