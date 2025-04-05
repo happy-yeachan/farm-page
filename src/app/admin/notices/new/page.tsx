@@ -78,18 +78,18 @@ export default function AdminNewNoticePage() {
   }
   
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8 flex justify-between items-center">
+    <div className="container mx-auto px-4 py-6 sm:py-8">
+      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold mb-2">새 공지사항 작성</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">새 공지사항 작성</h1>
+          <p className="text-gray-600 text-sm sm:text-base">
             농장 관련 새로운 소식이나 정보를 등록하세요
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 w-full sm:w-auto">
           <Link 
             href="/admin/notices" 
-            className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200"
+            className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 text-center w-full sm:w-auto"
           >
             목록으로 돌아가기
           </Link>
@@ -97,9 +97,9 @@ export default function AdminNewNoticePage() {
       </div>
       
       {/* 공지사항 작성 폼 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          <div>
             <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
               카테고리
             </label>
@@ -115,7 +115,7 @@ export default function AdminNewNoticePage() {
             </select>
           </div>
           
-          <div className="mb-4">
+          <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
               제목
             </label>
@@ -129,30 +129,33 @@ export default function AdminNewNoticePage() {
             />
           </div>
           
-          <div className="mb-6">
+          <div>
             <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
               내용
             </label>
             <textarea
               id="content"
-              rows={12}
+              rows={10}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="공지사항 내용을 입력하세요"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             ></textarea>
+            <p className="mt-1 text-xs text-gray-500">
+              문단 구분은 Enter 키를 두 번 눌러 빈 줄을 추가하세요
+            </p>
           </div>
           
-          <div className="flex justify-end space-x-3">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4">
             <Link
               href="/admin/notices"
-              className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200"
+              className="w-full sm:w-auto px-4 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 text-center"
             >
               취소
             </Link>
             <button
               type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 disabled:opacity-70"
+              className="w-full sm:w-auto px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 disabled:opacity-70 text-center"
               disabled={isSubmitting}
             >
               {isSubmitting ? '등록 중...' : '등록하기'}

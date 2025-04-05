@@ -145,24 +145,24 @@ export default function AdminNoticesPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8 flex justify-between items-center">
+    <div className="container mx-auto px-0 sm:px-4 py-6 sm:py-8">
+      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold mb-2">공지사항 관리</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">공지사항 관리</h1>
+          <p className="text-gray-600 text-sm sm:text-base">
             농장 관련 소식과 정보를 관리하세요
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Link 
             href="/admin/dashboard" 
-            className="bg-orange-100 text-orange-800 px-4 py-2 rounded-lg hover:bg-orange-200"
+            className="bg-orange-100 text-orange-800 px-3 sm:px-4 py-2 rounded-lg hover:bg-orange-200 text-center sm:text-left text-sm sm:text-base"
           >
             대시보드로 돌아가기
           </Link>
           <Link 
             href="/admin/notices/new" 
-            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+            className="bg-orange-500 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-orange-600 text-center sm:text-left text-sm sm:text-base"
           >
             + 새 공지사항 작성
           </Link>
@@ -170,7 +170,7 @@ export default function AdminNoticesPage() {
       </div>
       
       {/* 검색 및 필터 */}
-      <div className="mb-6 bg-white p-4 rounded-lg shadow-md">
+      <div className="mb-6 bg-white p-3 sm:p-4 rounded-lg shadow-md">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
@@ -214,12 +214,12 @@ export default function AdminNoticesPage() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-center">번호</th>
-                <th className="px-4 py-3 text-center">카테고리</th>
-                <th className="px-4 py-3 text-left">제목</th>
-                <th className="px-4 py-3 text-center">작성일</th>
-                <th className="px-4 py-3 text-center">조회수</th>
-                <th className="px-4 py-3 text-center">관리</th>
+                <th className="px-2 sm:px-4 py-3 text-center">번호</th>
+                <th className="px-2 sm:px-4 py-3 text-center">카테고리</th>
+                <th className="px-2 sm:px-4 py-3 text-left">제목</th>
+                <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-center">작성일</th>
+                <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-center">조회수</th>
+                <th className="px-2 sm:px-4 py-3 text-center">관리</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -227,8 +227,8 @@ export default function AdminNoticesPage() {
                 <React.Fragment key={notice.id}>
                   {editNoticeId === notice.id ? (
                     <tr className="bg-orange-50">
-                      <td className="px-4 py-3 text-center">{notice.id}</td>
-                      <td className="px-4 py-3 text-center">
+                      <td className="px-2 sm:px-4 py-3 text-center">{notice.id}</td>
+                      <td className="px-2 sm:px-4 py-3 text-center">
                         <select 
                           className="p-1 border rounded text-sm w-full"
                           value={editCategory}
@@ -239,7 +239,7 @@ export default function AdminNoticesPage() {
                           ))}
                         </select>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-2 sm:px-4 py-3">
                         <input 
                           type="text" 
                           className="p-1 border rounded text-sm w-full"
@@ -247,9 +247,9 @@ export default function AdminNoticesPage() {
                           onChange={(e) => setEditTitle(e.target.value)} 
                         />
                       </td>
-                      <td className="px-4 py-3 text-center">{notice.date}</td>
-                      <td className="px-4 py-3 text-center">{notice.views.toLocaleString()}</td>
-                      <td className="px-4 py-3 text-center">
+                      <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-center">{notice.date}</td>
+                      <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-center">{notice.views.toLocaleString()}</td>
+                      <td className="px-2 sm:px-4 py-3 text-center">
                         <div className="flex justify-center space-x-2">
                           <button 
                             className="p-1 text-green-600 hover:bg-green-50 rounded"
@@ -268,23 +268,28 @@ export default function AdminNoticesPage() {
                     </tr>
                   ) : (
                     <tr className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-center">{notice.id}</td>
-                      <td className="px-4 py-3 text-center">
-                        <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                      <td className="px-2 sm:px-4 py-3 text-center">{notice.id}</td>
+                      <td className="px-2 sm:px-4 py-3 text-center">
+                        <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded whitespace-nowrap">
                           {notice.category}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-2 sm:px-4 py-3">
                         <Link href={`/notice/${notice.id}`} className="hover:text-orange-600">
-                          {notice.title}
+                          <span className="line-clamp-1 sm:line-clamp-none">{notice.title}</span>
+                          {!notice.title.includes("[") && (
+                            <div className="sm:hidden text-xs text-gray-500 mt-1">
+                              {notice.date} · 조회 {notice.views}
+                            </div>
+                          )}
                         </Link>
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-500">{notice.date}</td>
-                      <td className="px-4 py-3 text-center text-gray-500">{notice.views.toLocaleString()}</td>
-                      <td className="px-4 py-3 text-center">
-                        <div className="flex justify-center space-x-2">
+                      <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-center text-gray-500">{notice.date}</td>
+                      <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-center text-gray-500">{notice.views.toLocaleString()}</td>
+                      <td className="px-2 sm:px-4 py-3 text-center">
+                        <div className="flex justify-center space-x-1 sm:space-x-2">
                           <button 
-                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-md"
+                            className="p-1 sm:p-1.5 text-blue-600 hover:bg-blue-50 rounded-md"
                             title="수정"
                             onClick={() => startEdit(notice)}
                           >
@@ -293,7 +298,7 @@ export default function AdminNoticesPage() {
                             </svg>
                           </button>
                           <button 
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-md"
+                            className="p-1 sm:p-1.5 text-red-600 hover:bg-red-50 rounded-md"
                             title="삭제"
                             onClick={() => deleteNotice(notice.id)}
                           >
@@ -307,7 +312,7 @@ export default function AdminNoticesPage() {
                   )}
                   {editNoticeId === notice.id && (
                     <tr className="bg-orange-50">
-                      <td colSpan={6} className="px-4 py-3">
+                      <td colSpan={6} className="px-2 sm:px-4 py-3">
                         <div className="mb-2">
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             내용
