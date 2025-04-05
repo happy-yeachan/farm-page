@@ -115,13 +115,11 @@ export default function AdminNoticesPage() {
 
   // 공지사항 편집 시작
   const startEdit = (notice: typeof notices[0]) => {
-    setEditNoticeId(notice.id);
-    setEditTitle(notice.title);
-    setEditCategory(notice.category);
-    setEditContent(notice.content);
+    // 수정 페이지로 이동, URL 파라미터로 ID를 전달
+    router.push(`/admin/notices/edit/${notice.id}`);
   };
 
-  // 공지사항 편집 취소
+  // 공지사항 편집 취소 - 더 이상 필요하지 않음
   const cancelEdit = () => {
     setEditNoticeId(null);
     setEditTitle('');
@@ -129,7 +127,7 @@ export default function AdminNoticesPage() {
     setEditContent('');
   };
 
-  // 공지사항 편집 저장
+  // 공지사항 편집 저장 - 더 이상 필요하지 않음
   const saveEdit = () => {
     // 실제로는 API 호출을 통해 저장
     alert('공지사항이 수정되었습니다.');
