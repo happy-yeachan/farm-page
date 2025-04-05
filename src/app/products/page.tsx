@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { products } from "@/app/data/products";
 
 // SEO를 위한 메타데이터 설정
 export const metadata: Metadata = {
@@ -7,74 +8,6 @@ export const metadata: Metadata = {
   description: "행복한 감귤농장의 감귤, 한라봉, 천혜향 등 제주 특산품을 만나보세요. 제주도에서 직접 재배하여 당일 수확, 신선하게 배송해 드립니다.",
   keywords: "제주 감귤, 한라봉, 천혜향, 황금향, 레드향, 제주 과일, 감귤 직거래, 제주 특산품, 온라인 쇼핑몰",
 };
-
-// 가상의 상품 데이터
-const products = [
-  {
-    id: 1,
-    name: "프리미엄 한라봉",
-    price: 25000,
-    description: "제주 햇살 가득 머금은 달콤한 한라봉",
-    category: "만감류",
-    image: "/hanlabong.jpg"
-  },
-  {
-    id: 2,
-    name: "유기농 노지 감귤",
-    price: 15000,
-    description: "제주 흙에서 자란 달콤한 노지 감귤",
-    category: "감귤",
-    image: "/mandarin.jpg"
-  },
-  {
-    id: 3,
-    name: "제주 천혜향",
-    price: 22000,
-    description: "향이 진하고 당도 높은 제주 천혜향",
-    category: "만감류",
-    image: "/chunhyehyang.jpg"
-  },
-  {
-    id: 4,
-    name: "하우스 감귤",
-    price: 19000,
-    description: "하우스에서 정성껏 재배한 감귤",
-    category: "감귤",
-    image: "/house-mandarin.jpg"
-  },
-  {
-    id: 5,
-    name: "레드향",
-    price: 26000,
-    description: "제주에서 재배한 레드향",
-    category: "만감류",
-    image: "/redhyang.jpg"
-  },
-  {
-    id: 6,
-    name: "황금향",
-    price: 28000,
-    description: "황금빛 과육의 달콤한 황금향",
-    category: "만감류",
-    image: "/hwanggeumhyang.jpg"
-  },
-  {
-    id: 7,
-    name: "제주 흑돼지 소시지",
-    price: 18000,
-    description: "제주 흑돼지로 만든 프리미엄 소시지",
-    category: "기타 제품",
-    image: "/sausage.jpg"
-  },
-  {
-    id: 8,
-    name: "감귤 쿠키",
-    price: 12000,
-    description: "감귤 과즙으로 만든 수제 쿠키",
-    category: "기타 제품",
-    image: "/cookies.jpg"
-  }
-];
 
 // 카테고리 목록
 const categories = ["전체", "감귤", "만감류", "기타 제품"];

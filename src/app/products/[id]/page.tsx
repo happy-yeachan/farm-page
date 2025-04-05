@@ -1,124 +1,20 @@
 'use client';
 
 import Link from "next/link";
-import { Metadata } from "next";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { addToCart } from "@/app/lib/cartUtils";
+import { products } from "@/app/data/products";
 
-// 가상의 상품 데이터 (실제로는 API에서 데이터를 가져올 것입니다)
-const products = [
-  {
-    id: 1,
-    name: "프리미엄 한라봉",
-    price: 25000,
-    description: "제주 햇살 가득 머금은 달콤한 한라봉",
-    category: "만감류",
-    image: "/hanlabong.jpg",
-    stock: 50,
-    origin: "제주특별자치도 서귀포시",
-    harvestDate: "2024년 1월",
-    details: [
-      "제주 서귀포시 해안가에서 재배한 프리미엄 한라봉입니다.",
-      "풍부한 일조량과 깨끗한 제주 바닷바람을 맞고 자란 한라봉은 당도가 뛰어납니다.",
-      "두꺼운 껍질 속에 풍부한 과즙과 새콤달콤한 맛이 특징입니다.",
-      "비타민C가 풍부하여 면역력 향상에 도움을 줍니다."
-    ]
-  },
-  {
-    id: 2,
-    name: "유기농 노지 감귤",
-    price: 15000,
-    description: "제주 흙에서 자란 달콤한 노지 감귤",
-    category: "감귤",
-    image: "/mandarin.jpg",
-    stock: 100,
-    origin: "제주특별자치도 서귀포시",
-    harvestDate: "2023년 12월",
-    details: [
-      "유기농 인증을 받은 친환경 노지 감귤입니다.",
-      "농약과 화학비료 없이 유기농법으로 재배했습니다.",
-      "제주 화산토양에서 자라 영양소가 풍부합니다.",
-      "껍질이 얇고 과즙이 많은 고품질 감귤입니다."
-    ]
-  },
-  {
-    id: 3,
-    name: "제주 천혜향",
-    price: 22000,
-    description: "향이 진하고 당도 높은 제주 천혜향",
-    category: "만감류",
-    image: "/chunhyehyang.jpg",
-    stock: 75,
-    origin: "제주특별자치도 서귀포시",
-    harvestDate: "2024년 2월",
-    details: [
-      "천혜향은 한라봉과 오렌지를 교배한 품종으로 향이 뛰어납니다.",
-      "과즙이 풍부하고 당도가 높아 선물용으로 인기 있는 상품입니다.",
-      "비타민C와 구연산이 풍부하여 피로 회복에 좋습니다.",
-      "제주의 맑은 공기와 깨끗한 물로 재배했습니다."
-    ]
-  },
-  {
-    id: 4,
-    name: "하우스 감귤",
-    price: 19000,
-    description: "하우스에서 정성껏 재배한 감귤",
-    category: "감귤",
-    image: "/house-mandarin.jpg",
-    stock: 120,
-    origin: "제주특별자치도 서귀포시",
-    harvestDate: "2024년 3월",
-    details: [
-      "하우스에서 온도와 습도를 최적화하여 재배한 감귤입니다.",
-      "제철이 아닌 시기에도 신선한 감귤을 즐길 수 있습니다.",
-      "당도가 높고 산미가 적절한 균형잡힌 맛이 특징입니다.",
-      "껍질이 얇고 씨가 적어 먹기 편합니다."
-    ]
-  }
-];
-
+// 페이지 타입 정의
 type Props = {
   params: {
     id: string;
   };
 };
 
-// 동적 메타데이터 생성
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const productId = parseInt(params.id);
-  const product = products.find(p => p.id === productId);
-  
-  if (!product) {
-    return {
-      title: "상품을 찾을 수 없습니다 | 행복한 감귤농장",
-      description: "요청하신 상품 정보를 찾을 수 없습니다."
-    };
-  }
-  
-  // 이미지 경로 처리
-  const imageUrl = product.image.startsWith('http') 
-    ? product.image 
-    : `https://jejumandarin.com${product.image}`;
-  
-  return {
-    title: `${product.name} | 행복한 감귤농장 제주 감귤 직거래`,
-    description: `${product.description}. 제주 서귀포시 직영 감귤농장에서 당일 수확한 ${product.name}을 산지 직송으로 신선하게 만나보세요.`,
-    keywords: `${product.name}, ${product.category}, 제주 감귤, 제주 특산품, 감귤 직거래, 제주 ${product.category}`,
-    openGraph: {
-      title: `${product.name} | 행복한 감귤농장`,
-      description: product.description,
-      type: 'website',
-      // 안전하게 images 속성 처리
-      images: [{
-        url: imageUrl,
-        width: 800,
-        height: 600,
-        alt: product.name
-      }]
-    }
-  };
-}
+// 클라이언트 컴포넌트에서는 generateMetadata를 사용할 수 없으므로 제거
+// SEO를 위한 메타데이터는 별도의 파일로 분리해야 함
 
 export default function ProductDetail({ params }: Props) {
   const router = useRouter();
