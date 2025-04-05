@@ -275,9 +275,9 @@ export default function AdminNoticesPage() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <a href={`/notice/${notice.id}`} target="_blank" className="hover:text-orange-600">
+                        <Link href={`/notice/${notice.id}`} className="hover:text-orange-600">
                           {notice.title}
-                        </a>
+                        </Link>
                       </td>
                       <td className="px-4 py-3 text-center text-gray-500">{notice.date}</td>
                       <td className="px-4 py-3 text-center text-gray-500">{notice.views.toLocaleString()}</td>
