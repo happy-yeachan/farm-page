@@ -1,5 +1,10 @@
+'use client';
+
 import Link from "next/link";
 import { Metadata } from "next";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { addToCart } from "@/app/lib/cartUtils";
 
 // 가상의 상품 데이터 (실제로는 API에서 데이터를 가져올 것입니다)
 const products = [
@@ -116,8 +121,86 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function ProductDetail({ params }: Props) {
+  const router = useRouter();
+  const [quantity, setQuantity] = useState(1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [showCartAlert, setShowCartAlert] = useState(false);
+  
   const productId = parseInt(params.id);
   const product = products.find(p => p.id === productId);
+
+  useEffect(() => {
+    // 로그인 상태 확인
+    try {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      console.error('로그인 상태 확인 오류:', error);
+    }
+  }, []);
+
+  // 수량 증가/감소 처리
+  const handleQuantityChange = (change: number) => {
+    const newQuantity = quantity + change;
+    if (newQuantity >= 1) {
+      setQuantity(newQuantity);
+    }
+  };
+
+  // 장바구니에 담기
+  const handleAddToCart = () => {
+    if (!product) return;
+    
+    setIsAddingToCart(true);
+    
+    try {
+      addToCart(
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image
+        },
+        quantity,
+        isLoggedIn
+      );
+      
+      // 성공 알림 표시
+      setShowCartAlert(true);
+      setTimeout(() => setShowCartAlert(false), 3000);
+    } catch (error) {
+      console.error('장바구니 추가 오류:', error);
+      alert('장바구니 추가 중 오류가 발생했습니다.');
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
+  // 바로 구매하기
+  const handleBuyNow = () => {
+    if (!product) return;
+    
+    try {
+      // 장바구니에 상품 추가 후 장바구니 페이지로 이동
+      addToCart(
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image
+        },
+        quantity,
+        isLoggedIn
+      );
+      router.push('/cart');
+    } catch (error) {
+      console.error('구매 중 오류:', error);
+      alert('구매 처리 중 오류가 발생했습니다.');
+    }
+  };
 
   if (!product) {
     return (
@@ -187,19 +270,52 @@ export default function ProductDetail({ params }: Props) {
             <div className="flex items-center mb-4">
               <span className="mr-4">수량</span>
               <div className="flex border rounded-md">
-                <button className="px-3 py-1 border-r">-</button>
-                <span className="px-4 py-1">1</span>
-                <button className="px-3 py-1 border-l">+</button>
+                <button 
+                  className="px-3 py-1 border-r"
+                  onClick={() => handleQuantityChange(-1)}
+                  disabled={quantity <= 1}
+                >
+                  -
+                </button>
+                <span className="px-4 py-1">{quantity}</span>
+                <button 
+                  className="px-3 py-1 border-l"
+                  onClick={() => handleQuantityChange(1)}
+                >
+                  +
+                </button>
               </div>
+              {product.stock < 10 && (
+                <span className="ml-3 text-sm text-red-500">
+                  재고 {product.stock}개 남음
+                </span>
+              )}
             </div>
             
-            <button className="w-full bg-orange-500 text-white py-3 rounded-md font-medium hover:bg-orange-600 mb-2">
-              장바구니에 담기
+            <button 
+              className="w-full bg-orange-500 text-white py-3 rounded-md font-medium hover:bg-orange-600 mb-2 disabled:bg-gray-400"
+              onClick={handleAddToCart}
+              disabled={isAddingToCart}
+            >
+              {isAddingToCart ? '담는 중...' : '장바구니에 담기'}
             </button>
             
-            <button className="w-full border border-orange-500 text-orange-500 py-3 rounded-md font-medium hover:bg-orange-50">
+            <button 
+              className="w-full border border-orange-500 text-orange-500 py-3 rounded-md font-medium hover:bg-orange-50"
+              onClick={handleBuyNow}
+            >
               바로 구매하기
             </button>
+            
+            {/* 장바구니 추가 알림 */}
+            {showCartAlert && (
+              <div className="mt-3 bg-green-100 text-green-800 p-3 rounded-md text-sm flex justify-between items-center">
+                <span>상품이 장바구니에 추가되었습니다.</span>
+                <Link href="/cart" className="text-green-800 font-medium underline">
+                  장바구니 보기
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* 상품 상세 정보 */}

@@ -1,48 +1,71 @@
+'use client';
+
 import Link from "next/link";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "장바구니 | 행복한 감귤농장",
-  description: "행복한 감귤농장의 신선한 감귤 상품을 장바구니에 담고 한 번에 주문하세요. 3만원 이상 구매 시 무료배송, 제주 직송으로 신선하게 배송해 드립니다.",
-  keywords: "감귤 장바구니, 제주 과일 주문, 한라봉 구매, 천혜향 쇼핑, 과일 배송, 제주 특산품 구매",
-};
-
-// 가상의 장바구니 아이템 데이터
-const cartItems = [
-  {
-    id: 1,
-    productId: 1,
-    name: "프리미엄 한라봉",
-    price: 25000,
-    quantity: 2,
-    image: "/hanlabong.jpg"
-  },
-  {
-    id: 2,
-    productId: 3,
-    name: "제주 천혜향",
-    price: 22000,
-    quantity: 1,
-    image: "/chunhyehyang.jpg"
-  },
-  {
-    id: 3,
-    productId: 2,
-    name: "유기농 노지 감귤",
-    price: 15000,
-    quantity: 3,
-    image: "/mandarin.jpg"
-  }
-];
+import { useState, useEffect } from "react";
+import { getCartFromCookie, getCartFromSession, updateCartItemQuantity, removeFromCart, CartItem } from "@/app/lib/cartUtils";
 
 export default function CartPage() {
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    // 장바구니 데이터 로드
+    try {
+      // 로그인 상태 확인
+      const userData = localStorage.getItem('user');
+      const loggedIn = !!userData;
+      setIsLoggedIn(loggedIn);
+      
+      // 장바구니 데이터 가져오기
+      const items = loggedIn ? getCartFromSession() : getCartFromCookie();
+      setCartItems(items);
+    } catch (error) {
+      console.error('장바구니 로드 중 오류:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
+  // 수량 변경 처리
+  const handleQuantityChange = (productId: number, change: number) => {
+    const item = cartItems.find(item => item.productId === productId);
+    if (!item) return;
+    
+    const newQuantity = item.quantity + change;
+    if (newQuantity < 1) return;
+    
+    // 수량 업데이트
+    updateCartItemQuantity(productId, newQuantity, isLoggedIn);
+    
+    // 상태 업데이트
+    setCartItems(prevItems => 
+      prevItems.map(item => 
+        item.productId === productId 
+          ? { ...item, quantity: newQuantity } 
+          : item
+      )
+    );
+  };
+  
+  // 상품 삭제 처리
+  const handleRemoveItem = (productId: number) => {
+    if (confirm('상품을 장바구니에서 삭제하시겠습니까?')) {
+      // 상품 삭제
+      removeFromCart(productId, isLoggedIn);
+      
+      // 상태 업데이트
+      setCartItems(prevItems => prevItems.filter(item => item.productId !== productId));
+    }
+  };
+  
   // 장바구니 합계 계산
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shippingFee = subtotal >= 30000 ? 0 : 3000; // 3만원 이상 무료 배송
   const total = subtotal + shippingFee;
 
   // 주문 요약 컴포넌트
-  const OrderSummary = () => (
+  const OrderSummary = () =>
     <div className="border border-orange-100 rounded-lg p-4 sm:p-6 bg-orange-50 h-fit sticky top-20">
       <h2 className="text-lg font-semibold mb-4 flex items-center">
         <span className="text-orange-500 mr-2">🛒</span> 주문 요약
@@ -72,7 +95,11 @@ export default function CartPage() {
         </div>
       </div>
       
-      <button className="w-full bg-orange-500 text-white py-3 rounded-md font-medium hover:bg-orange-600 mb-2">
+      <button 
+        className="w-full bg-orange-500 text-white py-3 rounded-md font-medium hover:bg-orange-600 mb-2"
+        disabled={cartItems.length === 0}
+        onClick={() => alert('주문 처리 기능은 아직 구현되지 않았습니다.')}
+      >
         주문하기
       </button>
       
@@ -90,7 +117,15 @@ export default function CartPage() {
         <p>• 제주 감귤 시즌 회원 추가 할인</p>
       </div>
     </div>
-  );
+  ;
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -144,9 +179,20 @@ export default function CartPage() {
                         <td className="px-6 py-4">
                           <div className="flex justify-center">
                             <div className="flex border rounded-md">
-                              <button className="px-2 py-1 border-r">-</button>
+                              <button 
+                                className="px-2 py-1 border-r"
+                                onClick={() => handleQuantityChange(item.productId, -1)}
+                                disabled={item.quantity <= 1}
+                              >
+                                -
+                              </button>
                               <span className="px-3 py-1">{item.quantity}</span>
-                              <button className="px-2 py-1 border-l">+</button>
+                              <button 
+                                className="px-2 py-1 border-l"
+                                onClick={() => handleQuantityChange(item.productId, 1)}
+                              >
+                                +
+                              </button>
                             </div>
                           </div>
                         </td>
@@ -154,7 +200,12 @@ export default function CartPage() {
                           {(item.price * item.quantity).toLocaleString()}원
                         </td>
                         <td className="px-6 py-4 text-center">
-                          <button className="text-orange-500 hover:text-orange-700">삭제</button>
+                          <button 
+                            className="text-orange-500 hover:text-orange-700"
+                            onClick={() => handleRemoveItem(item.productId)}
+                          >
+                            삭제
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -182,13 +233,29 @@ export default function CartPage() {
                         </p>
                       </div>
                     </div>
-                    <button className="text-gray-400">×</button>
+                    <button 
+                      className="text-gray-400"
+                      onClick={() => handleRemoveItem(item.productId)}
+                    >
+                      ×
+                    </button>
                   </div>
                   <div className="flex justify-between items-center">
                     <div className="flex border rounded-md">
-                      <button className="px-2 py-1 border-r">-</button>
+                      <button 
+                        className="px-2 py-1 border-r"
+                        onClick={() => handleQuantityChange(item.productId, -1)}
+                        disabled={item.quantity <= 1}
+                      >
+                        -
+                      </button>
                       <span className="px-3 py-1">{item.quantity}</span>
-                      <button className="px-2 py-1 border-l">+</button>
+                      <button 
+                        className="px-2 py-1 border-l"
+                        onClick={() => handleQuantityChange(item.productId, 1)}
+                      >
+                        +
+                      </button>
                     </div>
                     <div className="font-medium">
                       {(item.price * item.quantity).toLocaleString()}원
