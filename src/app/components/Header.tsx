@@ -31,6 +31,7 @@ export default function Header() {
             <Link href="/notice" className="hover:underline">공지사항</Link>
             <Link href="/inquiry" className="hover:underline">문의하기</Link>
             <Link href="/cart" className="hover:underline">장바구니</Link>
+            <Link href="/login" className="hover:underline">로그인</Link>
           </div>
           
           {/* 모바일 메뉴 버튼 */}
@@ -73,6 +74,7 @@ export default function Header() {
             <Link href="/notice" className="hover:bg-orange-600 px-2 py-2 rounded">공지사항</Link>
             <Link href="/inquiry" className="hover:bg-orange-600 px-2 py-2 rounded">문의하기</Link>
             <Link href="/cart" className="hover:bg-orange-600 px-2 py-2 rounded">장바구니</Link>
+            <Link href="/login" className="hover:bg-orange-600 px-2 py-2 rounded">로그인</Link>
           </div>
         </div>
       </nav>
