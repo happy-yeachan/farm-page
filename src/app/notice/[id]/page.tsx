@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Metadata } from "next";
 
 // 가상의 공지사항 데이터
 const notices = [
@@ -120,6 +121,25 @@ type Props = {
   };
 };
 
+// 동적 메타데이터 생성
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const noticeId = parseInt(params.id);
+  const notice = notices.find(n => n.id === noticeId);
+  
+  if (!notice) {
+    return {
+      title: "공지사항을 찾을 수 없습니다 | 행복한 감귤농장",
+      description: "요청하신 공지사항 정보를 찾을 수 없습니다."
+    };
+  }
+  
+  return {
+    title: `${notice.title} | 행복한 감귤농장 공지사항`,
+    description: notice.content.substring(0, 150) + "...",
+    keywords: `${notice.category}, 감귤 농장 공지사항, 제주 감귤 소식, 감귤 농장 이벤트`,
+  };
+}
+
 export default function NoticeDetailPage({ params }: Props) {
   const noticeId = parseInt(params.id);
   const notice = notices.find(n => n.id === noticeId);
@@ -153,20 +173,20 @@ export default function NoticeDetailPage({ params }: Props) {
 
       <div className="border border-orange-100 rounded-lg overflow-hidden">
         {/* 공지사항 헤더 */}
-        <div className="bg-orange-50 p-6">
+        <div className="bg-orange-50 p-4 sm:p-6">
           <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded mb-2">
             {notice.category}
           </span>
-          <h1 className="text-2xl font-bold mb-4">{notice.title}</h1>
-          <div className="flex justify-between text-sm text-gray-500">
+          <h1 className="text-xl sm:text-2xl font-bold mb-4">{notice.title}</h1>
+          <div className="flex flex-col sm:flex-row sm:justify-between text-sm text-gray-500 space-y-1 sm:space-y-0">
             <div>작성일: {notice.date}</div>
             <div>조회수: {notice.views.toLocaleString()}</div>
           </div>
         </div>
         
         {/* 공지사항 내용 */}
-        <div className="p-6">
-          <div className="min-h-[300px] whitespace-pre-line">
+        <div className="p-4 sm:p-6">
+          <div className="min-h-[200px] sm:min-h-[300px] whitespace-pre-line text-sm sm:text-base">
             {notice.content}
           </div>
         </div>
@@ -176,22 +196,22 @@ export default function NoticeDetailPage({ params }: Props) {
       <div className="mt-8 border-t border-orange-100 pt-6">
         <div className="flex flex-col space-y-4">
           {nextNotice && (
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">다음글</span>
-              <Link href={`/notice/${nextNotice.id}`} className="text-gray-900 hover:text-orange-600 flex-1 ml-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0 border-b border-gray-100 pb-3">
+              <span className="text-gray-500 text-sm font-medium">다음글</span>
+              <Link href={`/notice/${nextNotice.id}`} className="text-gray-900 hover:text-orange-600 flex-1 sm:ml-4 order-first sm:order-none">
                 {nextNotice.title}
               </Link>
-              <span className="text-gray-500 text-sm">{nextNotice.date}</span>
+              <span className="text-gray-500 text-xs">{nextNotice.date}</span>
             </div>
           )}
           
           {prevNotice && (
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">이전글</span>
-              <Link href={`/notice/${prevNotice.id}`} className="text-gray-900 hover:text-orange-600 flex-1 ml-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
+              <span className="text-gray-500 text-sm font-medium">이전글</span>
+              <Link href={`/notice/${prevNotice.id}`} className="text-gray-900 hover:text-orange-600 flex-1 sm:ml-4 order-first sm:order-none">
                 {prevNotice.title}
               </Link>
-              <span className="text-gray-500 text-sm">{prevNotice.date}</span>
+              <span className="text-gray-500 text-xs">{prevNotice.date}</span>
             </div>
           )}
         </div>

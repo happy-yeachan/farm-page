@@ -1,4 +1,11 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "공지사항 | 행복한 감귤농장",
+  description: "행복한 감귤농장의 공지사항과 이벤트 소식을 알려드립니다. 감귤 수확 일정, 배송 안내, 할인 이벤트 정보를 확인하세요.",
+  keywords: "감귤 농장 공지사항, 제주 감귤 소식, 한라봉 수확, 천혜향 출하, 제주 과일 이벤트",
+};
 
 // 가상의 공지사항 데이터
 const notices = [
@@ -79,8 +86,8 @@ export default function NoticePage() {
         </div>
       </div>
       
-      {/* 공지사항 목록 */}
-      <div className="border border-orange-100 rounded-lg overflow-hidden">
+      {/* 공지사항 목록 - 데스크톱 뷰 */}
+      <div className="hidden md:block border border-orange-100 rounded-lg overflow-hidden">
         <table className="w-full">
           <thead className="bg-orange-50">
             <tr>
@@ -119,9 +126,30 @@ export default function NoticePage() {
         </table>
       </div>
       
+      {/* 공지사항 목록 - 모바일 뷰 */}
+      <div className="md:hidden space-y-4">
+        {notices.map((notice) => (
+          <div key={notice.id} className="border border-orange-100 rounded-lg overflow-hidden hover:shadow-sm">
+            <Link href={`/notice/${notice.id}`} className="block p-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">
+                  {notice.category}
+                </span>
+                <span className="text-xs text-gray-500">조회 {notice.views.toLocaleString()}</span>
+              </div>
+              <h3 className="font-medium text-gray-900 mb-1">{notice.title}</h3>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-gray-500">{notice.date}</span>
+                <span className="text-xs text-gray-400">#{notice.id}</span>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+      
       {/* 페이지네이션 */}
       <div className="flex justify-center mt-8">
-        <nav className="flex items-center space-x-2">
+        <nav className="flex flex-wrap items-center justify-center gap-2">
           <button className="px-3 py-1 border rounded hover:bg-orange-50">이전</button>
           <button className="px-3 py-1 border rounded bg-orange-500 text-white">1</button>
           <button className="px-3 py-1 border rounded hover:bg-orange-50">2</button>

@@ -1,4 +1,11 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "장바구니 | 행복한 감귤농장",
+  description: "행복한 감귤농장의 신선한 감귤 상품을 장바구니에 담고 한 번에 주문하세요. 3만원 이상 구매 시 무료배송, 제주 직송으로 신선하게 배송해 드립니다.",
+  keywords: "감귤 장바구니, 제주 과일 주문, 한라봉 구매, 천혜향 쇼핑, 과일 배송, 제주 특산품 구매",
+};
 
 // 가상의 장바구니 아이템 데이터
 const cartItems = [
@@ -53,8 +60,8 @@ export default function CartPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* 장바구니 상품 목록 */}
-          <div className="lg:col-span-2">
+          {/* 장바구니 상품 목록 - 데스크탑 뷰 */}
+          <div className="lg:col-span-2 hidden sm:block">
             <div className="border border-orange-100 rounded-lg overflow-hidden">
               <table className="w-full">
                 <thead className="bg-orange-50">
@@ -101,23 +108,58 @@ export default function CartPage() {
                 </tbody>
               </table>
             </div>
+          </div>
+
+          {/* 장바구니 상품 목록 - 모바일 뷰 */}
+          <div className="lg:col-span-2 sm:hidden space-y-4">
+            {cartItems.map((item) => (
+              <div key={item.id} className="border border-orange-100 rounded-lg p-4">
+                <div className="flex justify-between mb-4">
+                  <div className="flex items-start">
+                    <div className="h-16 w-16 flex-shrink-0 bg-orange-100 rounded flex items-center justify-center text-xs text-orange-500 font-medium mr-3">
+                      {item.name.substring(0, 2)}
+                    </div>
+                    <div>
+                      <Link href={`/products/${item.productId}`} className="font-medium text-gray-900 hover:text-orange-600">
+                        {item.name}
+                      </Link>
+                      <p className="text-xs text-gray-500 mt-1">제주 직송</p>
+                      <p className="text-sm font-medium text-orange-600 mt-1">
+                        {item.price.toLocaleString()}원
+                      </p>
+                    </div>
+                  </div>
+                  <button className="text-gray-400">×</button>
+                </div>
+                <div className="flex justify-between items-center">
+                  <div className="flex border rounded-md">
+                    <button className="px-2 py-1 border-r">-</button>
+                    <span className="px-3 py-1">{item.quantity}</span>
+                    <button className="px-2 py-1 border-l">+</button>
+                  </div>
+                  <div className="font-medium">
+                    {(item.price * item.quantity).toLocaleString()}원
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
             
-            {/* 참고 안내 */}
-            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-              <h3 className="text-sm font-semibold mb-2 flex items-center">
-                <span className="text-orange-500 mr-2">📢</span> 안내사항
-              </h3>
-              <ul className="text-xs text-gray-600 space-y-1">
-                <li>• 제주도에서 출발하는 상품으로 배송이 1-2일 더 소요될 수 있습니다.</li>
-                <li>• 30,000원 이상 구매 시 배송비가 무료입니다.</li>
-                <li>• 신선 상품 특성상 단순 변심에 의한 교환/환불이 제한될 수 있습니다.</li>
-              </ul>
-            </div>
+          {/* 참고 안내 - 데스크탑에서만 표시 */}
+          <div className="lg:col-span-2 mt-4 p-4 bg-blue-50 rounded-lg hidden sm:block">
+            <h3 className="text-sm font-semibold mb-2 flex items-center">
+              <span className="text-orange-500 mr-2">📢</span> 안내사항
+            </h3>
+            <ul className="text-xs text-gray-600 space-y-1">
+              <li>• 제주도에서 출발하는 상품으로 배송이 1-2일 더 소요될 수 있습니다.</li>
+              <li>• 30,000원 이상 구매 시 배송비가 무료입니다.</li>
+              <li>• 신선 상품 특성상 단순 변심에 의한 교환/환불이 제한될 수 있습니다.</li>
+            </ul>
           </div>
 
           {/* 주문 요약 */}
           <div className="lg:col-span-1">
-            <div className="border border-orange-100 rounded-lg p-6 bg-orange-50">
+            <div className="border border-orange-100 rounded-lg p-4 sm:p-6 bg-orange-50 sticky top-4">
               <h2 className="text-lg font-semibold mb-4 flex items-center">
                 <span className="text-orange-500 mr-2">🛒</span> 주문 요약
               </h2>
@@ -164,6 +206,18 @@ export default function CartPage() {
                 <p>• 제주 감귤 시즌 회원 추가 할인</p>
               </div>
             </div>
+          </div>
+          
+          {/* 참고 안내 - 모바일에서만 표시 */}
+          <div className="lg:col-span-3 mt-4 p-4 bg-blue-50 rounded-lg sm:hidden">
+            <h3 className="text-sm font-semibold mb-2 flex items-center">
+              <span className="text-orange-500 mr-2">📢</span> 안내사항
+            </h3>
+            <ul className="text-xs text-gray-600 space-y-1">
+              <li>• 제주도에서 출발하는 상품으로 배송이 1-2일 더 소요될 수 있습니다.</li>
+              <li>• 30,000원 이상 구매 시 배송비가 무료입니다.</li>
+              <li>• 신선 상품 특성상 단순 변심에 의한 교환/환불이 제한될 수 있습니다.</li>
+            </ul>
           </div>
         </div>
       )}
