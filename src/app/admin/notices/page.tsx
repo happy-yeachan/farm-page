@@ -193,7 +193,7 @@ export default function AdminNoticesPage() {
               {categories.map(category => (
                 <button
                   key={category}
-                  className={`px-3 py-1 rounded-full text-sm ${
+                  className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                     selectedCategory === category
                       ? 'bg-orange-500 text-white'
                       : 'bg-orange-100 text-orange-800 hover:bg-orange-200'

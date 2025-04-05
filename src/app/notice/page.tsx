@@ -68,19 +68,19 @@ export default function NoticePage() {
       {/* 카테고리 필터 */}
       <div className="mb-8">
         <div className="flex flex-wrap gap-2">
-          <button className="px-4 py-2 border border-orange-200 rounded-full bg-orange-500 text-white focus:outline-none">
+          <button className="px-4 py-2 border border-orange-200 rounded-full bg-orange-500 text-white focus:outline-none whitespace-nowrap">
             전체
           </button>
-          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none">
+          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none whitespace-nowrap">
             출하안내
           </button>
-          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none">
+          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none whitespace-nowrap">
             배송안내
           </button>
-          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none">
+          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none whitespace-nowrap">
             이벤트
           </button>
-          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none">
+          <button className="px-4 py-2 border border-orange-200 rounded-full hover:bg-orange-50 focus:outline-none whitespace-nowrap">
             상품안내
           </button>
         </div>
@@ -105,7 +105,7 @@ export default function NoticePage() {
                   {notice.id}
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">
+                  <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded whitespace-nowrap">
                     {notice.category}
                   </span>
                 </td>

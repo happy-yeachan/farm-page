@@ -174,7 +174,7 @@ export default function NoticeDetailPage({ params }: Props) {
       <div className="border border-orange-100 rounded-lg overflow-hidden">
         {/* 공지사항 헤더 */}
         <div className="bg-orange-50 p-4 sm:p-6">
-          <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded mb-2">
+          <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded whitespace-nowrap mb-2">
             {notice.category}
           </span>
           <h1 className="text-xl sm:text-2xl font-bold mb-4">{notice.title}</h1>
