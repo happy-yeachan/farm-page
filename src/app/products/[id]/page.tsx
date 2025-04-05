@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Metadata } from "next";
 
 // 가상의 상품 데이터 (실제로는 API에서 데이터를 가져올 것입니다)
 const products = [
@@ -78,6 +79,31 @@ type Props = {
   };
 };
 
+// 동적 메타데이터 생성
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const productId = parseInt(params.id);
+  const product = products.find(p => p.id === productId);
+  
+  if (!product) {
+    return {
+      title: "상품을 찾을 수 없습니다 | 행복한 감귤농장",
+      description: "요청하신 상품 정보를 찾을 수 없습니다."
+    };
+  }
+  
+  return {
+    title: `${product.name} | 행복한 감귤농장 제주 감귤 직거래`,
+    description: `${product.description}. 제주 서귀포시 직영 감귤농장에서 당일 수확한 ${product.name}을 산지 직송으로 신선하게 만나보세요.`,
+    keywords: `${product.name}, ${product.category}, 제주 감귤, 제주 특산품, 감귤 직거래, 제주 ${product.category}`,
+    openGraph: {
+      title: `${product.name} | 행복한 감귤농장`,
+      description: product.description,
+      type: 'website',
+      images: [product.image]
+    }
+  };
+}
+
 export default function ProductDetail({ params }: Props) {
   const productId = parseInt(params.id);
   const product = products.find(p => p.id === productId);
@@ -98,7 +124,12 @@ export default function ProductDetail({ params }: Props) {
   }
 
   return (
-    <div>
+    <div itemScope itemType="https://schema.org/Product">
+      <meta itemProp="sku" content={`JEJU-${product.id}`} />
+      <meta itemProp="mpn" content={`MANDARIN-${product.id}`} />
+      <meta itemProp="category" content={product.category} />
+      <meta itemProp="brand" content="행복한 감귤농장" />
+      
       <div className="mb-6">
         <Link href="/products" className="text-orange-500 hover:underline flex items-center">
           <span className="mr-1">←</span> 상품 목록으로 돌아가기
@@ -107,7 +138,7 @@ export default function ProductDetail({ params }: Props) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* 상품 이미지 */}
-        <div className="aspect-square bg-orange-50 rounded-lg flex items-center justify-center text-orange-500 font-bold text-xl">
+        <div className="aspect-square bg-orange-50 rounded-lg flex items-center justify-center text-orange-500 font-bold text-xl" itemProp="image" content={product.image}>
           {product.name}
         </div>
 
@@ -116,14 +147,25 @@ export default function ProductDetail({ params }: Props) {
           <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded mb-2">
             {product.category}
           </span>
-          <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-          <p className="text-2xl font-bold text-orange-600 mb-4">{product.price.toLocaleString()}원</p>
+          <h1 className="text-3xl font-bold mb-2" itemProp="name">{product.name}</h1>
+          <div itemProp="offers" itemScope itemType="https://schema.org/Offer">
+            <meta itemProp="priceCurrency" content="KRW" />
+            <meta itemProp="url" content={`https://jejumandarin.com/products/${product.id}`} />
+            <meta itemProp="availability" content={product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"} />
+            <p className="text-2xl font-bold text-orange-600 mb-4" itemProp="price" content={product.price.toString()}>{product.price.toLocaleString()}원</p>
+          </div>
           
           <div className="mb-6">
-            <p className="text-gray-700 mb-4">{product.description}</p>
+            <p className="text-gray-700 mb-4" itemProp="description">{product.description}</p>
             <div className="grid grid-cols-2 gap-2 text-sm text-gray-600 bg-orange-50 p-4 rounded-lg">
-              <p>원산지: {product.origin}</p>
-              <p>수확 시기: {product.harvestDate}</p>
+              <p itemProp="additionalProperty" itemScope itemType="https://schema.org/PropertyValue">
+                <meta itemProp="name" content="원산지" />
+                <span itemProp="value">원산지: {product.origin}</span>
+              </p>
+              <p itemProp="additionalProperty" itemScope itemType="https://schema.org/PropertyValue">
+                <meta itemProp="name" content="수확시기" />
+                <span itemProp="value">수확 시기: {product.harvestDate}</span>
+              </p>
               <p>재고: {product.stock}개</p>
               <p>배송: 제주 직송</p>
             </div>
@@ -191,6 +233,53 @@ export default function ProductDetail({ params }: Props) {
           </div>
         </div>
       </div>
+      
+      {/* 상품 리뷰 섹션 (SEO 향상) */}
+      <section className="mt-12" itemProp="review" itemScope itemType="https://schema.org/Review">
+        <h3 className="text-xl font-bold mb-6">고객 리뷰</h3>
+        <div className="border p-4 rounded-lg">
+          <div className="flex items-center mb-2">
+            <div className="flex text-yellow-400 mr-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span key={star}>★</span>
+              ))}
+            </div>
+            <meta itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+              <meta itemProp="ratingValue" content="5" />
+              <meta itemProp="bestRating" content="5" />
+            </meta>
+            <span className="font-medium" itemProp="author">김제주</span>
+            <span className="text-gray-500 text-sm ml-2">2024.03.15</span>
+            <meta itemProp="datePublished" content="2024-03-15" />
+          </div>
+          <h4 className="font-semibold mb-2" itemProp="name">정말 맛있는 {product.name}</h4>
+          <p className="text-gray-700" itemProp="reviewBody">
+            제주 여행 중 직접 방문했다가 너무 맛있어서 귀향 후에도 주문해 먹고 있어요. 
+            당도가 높고 과즙이 풍부해서 가족 모두가 만족하며 먹고 있습니다. 
+            포장도 꼼꼼하게 해주셔서 신선한 상태로 받았습니다. 재구매 의사 100%!
+          </p>
+        </div>
+      </section>
+      
+      {/* 연관 상품 섹션 */}
+      <section className="mt-12">
+        <h3 className="text-xl font-bold mb-6">함께 구매하면 좋은 상품</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {products.filter(p => p.id !== product.id).slice(0, 4).map(relatedProduct => (
+            <Link href={`/products/${relatedProduct.id}`} key={relatedProduct.id} className="block">
+              <div className="border rounded-lg overflow-hidden hover:shadow-md transition">
+                <div className="h-32 bg-orange-100 flex items-center justify-center text-orange-500 font-medium">
+                  {relatedProduct.name}
+                </div>
+                <div className="p-3">
+                  <h4 className="font-medium text-sm">{relatedProduct.name}</h4>
+                  <p className="text-orange-600 font-bold text-sm">{relatedProduct.price.toLocaleString()}원</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 } 

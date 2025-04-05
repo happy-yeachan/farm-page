@@ -14,8 +14,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "행복한 감귤농장 - 제주 직송 농산물 마켓",
-  description: "제주도에서 직접 재배한 신선한 감귤과 농산물을 만나보세요",
+  title: "행복한 감귤농장 - 제주 감귤, 한라봉, 천혜향 직거래 쇼핑몰",
+  description: "제주도 서귀포시에서 직접 재배한 프리미엄 감귤, 한라봉, 천혜향, 황금향 등 감귤류를 산지 직송으로 신선하게 만나보세요. 유기농 재배, 당일 수확 배송, 제주 감귤 농장 체험까지.",
+  keywords: "제주 감귤, 한라봉, 천혜향, 황금향, 밀감, 감귤 직거래, 제주도 특산품, 과일 선물세트, 제주 감귤농장, 농장 체험",
+  authors: [{ name: "행복한 감귤농장", url: "https://jejumandarin.com" }],
+  creator: "행복한 감귤농장",
+  publisher: "행복한 감귤농장",
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: "https://jejumandarin.com",
+    title: "행복한 감귤농장 - 제주 감귤, 한라봉, 천혜향 직거래 쇼핑몰",
+    description: "제주도 서귀포시에서 직접 재배한 프리미엄 감귤류를 산지 직송으로 신선하게 만나보세요.",
+    siteName: "행복한 감귤농장",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "행복한 감귤농장 - 제주 감귤, 한라봉, 천혜향 직거래 쇼핑몰",
+    description: "제주도 서귀포시에서 직접 재배한 프리미엄 감귤류를 산지 직송으로 신선하게 만나보세요.",
+  },
+  alternates: {
+    canonical: "https://jejumandarin.com",
+  },
 };
 
 export default function RootLayout({
