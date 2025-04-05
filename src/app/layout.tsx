@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import Header from "./components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,21 +49,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="bg-orange-500 text-white p-4 shadow-md">
-          <nav className="max-w-6xl mx-auto flex justify-between items-center">
-            <Link href="/" className="text-2xl font-bold flex items-center">
-              <span className="mr-2">🍊</span>
-              행복한 감귤농장
-            </Link>
-            <div className="flex space-x-6">
-              <Link href="/" className="hover:underline">홈</Link>
-              <Link href="/products" className="hover:underline">상품 목록</Link>
-              <Link href="/notice" className="hover:underline">공지사항</Link>
-              <Link href="/inquiry" className="hover:underline">문의하기</Link>
-              <Link href="/cart" className="hover:underline">장바구니</Link>
-            </div>
-          </nav>
-        </header>
+        <Header />
         <main className="max-w-6xl mx-auto py-8 px-4">
           {children}
         </main>
