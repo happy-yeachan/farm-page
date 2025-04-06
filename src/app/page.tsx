@@ -47,8 +47,13 @@ export default function Home() {
       
       {/* 히어로 섹션 */}
       <section className="relative h-96 rounded-xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-300">
-          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url("/images/mandarin-trees.jpg")',
+          }}
+        >
+          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white p-8 z-10">
