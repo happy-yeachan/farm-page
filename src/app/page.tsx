@@ -47,7 +47,9 @@ export default function Home() {
       
       {/* 히어로 섹션 */}
       <section className="relative h-96 rounded-xl overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url("https://coresos-phinf.pstatic.net/a/3819ih/6_6gfUd018svc1tqt7qmdam6x5_r053eo.jpg?type=e1920_std")' }}>
+        <div className="absolute inset-0 bg-cover bg-center" style={{ 
+          backgroundImage: `url(${encodeURI('https://media.istockphoto.com/id/153747513/photo/orange-trees-plantation.jpg?s=612x612&w=0&k=20&c=rTJ2LCkXCPVkYxJcRXzO7hAMupjWt6m82kYbSUvmQS4=')})` 
+        }}>
           <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
