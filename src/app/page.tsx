@@ -47,12 +47,14 @@ export default function Home() {
       
       {/* 히어로 섹션 */}
       <section className="relative h-96 rounded-xl overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url("/images/mandarin-trees.jpg")',
-          }}
-        >
+        <div className="absolute inset-0">
+          <Image 
+            src="/images/mandarin-trees.jpg"
+            alt="제주 감귤농장 전경"
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
+          />
           <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
