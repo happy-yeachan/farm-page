@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { addToCart } from "@/app/lib/cartUtils";
 import { products } from "@/app/data/products";
@@ -23,7 +23,8 @@ export default function ProductDetail({ params }: Props) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [showCartAlert, setShowCartAlert] = useState(false);
   
-  const productId = parseInt(params.id);
+  const { id } = params;
+  const productId = parseInt(id);
   const product = products.find(p => p.id === productId);
 
   useEffect(() => {

@@ -123,7 +123,8 @@ type Props = {
 
 // 동적 메타데이터 생성
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const noticeId = parseInt(params.id);
+  const { id } = params;
+  const noticeId = parseInt(id);
   const notice = notices.find(n => n.id === noticeId);
   
   if (!notice) {
@@ -141,7 +142,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function NoticeDetailPage({ params }: Props) {
-  const noticeId = parseInt(params.id);
+  const { id } = params;
+  const noticeId = parseInt(id);
   const notice = notices.find(n => n.id === noticeId);
 
   if (!notice) {
