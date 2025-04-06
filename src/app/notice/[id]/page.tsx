@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React from "react";
 import { Metadata } from "next";
 
 // 가상의 공지사항 데이터
@@ -121,7 +122,7 @@ type Props = {
   };
 };
 
-// 동적 메타데이터 생성
+// 동적 메타데이터 생성 (서버 컴포넌트에서는 async/await 사용)
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = params;
   const noticeId = parseInt(id);
@@ -142,8 +143,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function NoticeDetailPage({ params }: Props) {
-  const { id } = params;
-  const noticeId = parseInt(id);
+  // React.use를 사용하여 params를 처리하고 타입 단언을 통해 타입스크립트 오류 해결
+  const resolvedParams = React.use(params as any) as { id: string };
+  const noticeId = parseInt(resolvedParams.id);
   const notice = notices.find(n => n.id === noticeId);
 
   if (!notice) {

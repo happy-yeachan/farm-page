@@ -23,8 +23,9 @@ export default function ProductDetail({ params }: Props) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [showCartAlert, setShowCartAlert] = useState(false);
   
-  const { id } = params;
-  const productId = parseInt(id);
+  // React.use를 사용하여 params를 처리하고 타입 단언을 통해 타입스크립트 오류 해결
+  const resolvedParams = React.use(params as any) as { id: string };
+  const productId = parseInt(resolvedParams.id);
   const product = products.find(p => p.id === productId);
 
   useEffect(() => {
