@@ -47,7 +47,10 @@ export default function Home() {
       
       {/* 히어로 섹션 */}
       <section className="relative h-96 rounded-xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url("https://coresos-phinf.pstatic.net/a/3819ih/6_6gfUd018svc1tqt7qmdam6x5_r053eo.jpg?type=e1920_std")' }}>
+          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white p-8 z-10">
             <h1 className="text-4xl font-bold mb-4">제주 행복한 감귤농장의 신선한 감귤 직거래</h1>
             <p className="text-xl mb-6">감귤, 한라봉, 천혜향 등 제주도에서 직접 재배한 신선한 감귤류를 산지 직송으로 만나보세요</p>
