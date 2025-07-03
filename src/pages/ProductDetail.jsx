@@ -129,22 +129,6 @@ function ProductDetail() {
             </div>
           </div>
 
-          <div className="shipping-info">
-            <h3>배송 정보</h3>
-            <div className="meta-item">
-              <span className="meta-label">배송방법</span>
-              <span>{product.shippingInfo.method}</span>
-            </div>
-            <div className="meta-item">
-              <span className="meta-label">배송비</span>
-              <span>{product.shippingInfo.fee}</span>
-            </div>
-            <div className="meta-item">
-              <span className="meta-label">무료배송</span>
-              <span>{product.shippingInfo.freeOver} 이상 구매시</span>
-            </div>
-          </div>
-
           <div className="purchase-section">
             <div className="quantity-selector">
               <button 
@@ -185,9 +169,30 @@ function ProductDetail() {
       </div>
 
       {/* 상품 상세 정보 */}
-      <div className="product-description-detail">
-        <h2>상품 상세 정보</h2>
-        <pre className="long-description">{product.longDescription}</pre>
+      <div className="product-details">
+        <div className="section">
+          <h2>상품 상세 정보</h2>
+          <pre className="description">{product.longDescription}</pre>
+        </div>
+
+        {/* 배송 정보 */}
+        <div className="section">
+          <h2>배송 정보</h2>
+          <div className="shipping-info">
+            <div className="meta-item">
+              <span className="label">배송방법</span>
+              <span className="value">{product.shippingInfo.method}</span>
+            </div>
+            <div className="meta-item">
+              <span className="label">배송비</span>
+              <span className="value">{product.shippingInfo.fee}</span>
+            </div>
+            <div className="meta-item">
+              <span className="label">무료배송</span>
+              <span className="value">{product.shippingInfo.freeOver} 이상 구매시</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
